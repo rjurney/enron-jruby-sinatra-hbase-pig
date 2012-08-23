@@ -26,9 +26,7 @@ class HBaseClient
   def connect(table_name)
     conf = HBaseConfiguration.create
     admin = HBaseAdmin.new(conf)
-    admin.tableExists('enron')
-    tables = admin.listTables
-    @table = HTable.new(conf, 'enron')
+    @table = HTable.new(conf, table_name)
   end
   
   def get(key)
