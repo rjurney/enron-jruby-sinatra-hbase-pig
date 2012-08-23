@@ -3,26 +3,6 @@ enron-jruby-sinatra-hbase-pig
 
 Hortonworks demo of Enron emails using Hadoop, Pig, HBase, JRuby, Sinatra
 
-Installing Whirr
-================
-
-Whirr is available for download at (http://www.apache.org/dyn/closer.cgi/whirr/). Pick your favorite mirror, for example:
-
-```bash
-wget http://www.gtlib.gatech.edu/pub/apache/whirr/whirr-0.7.1/whirr-0.7.1.tar.gz
-tar -xvzf whirr-0.7.1.tar.gz
-cd whirr-0.7.1
-```
-
-Now checkout the directions here: (http://whirr.apache.org/docs/0.7.1/whirr-in-5-minutes.html)
-
-Once you've setup your amazon credentials (or your favorite cloud), lets boot a five node Hadoop/Zookeeper/HBase cluster:
-
-```bash
-ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa_whirr 
-bin/whirr launch-cluster --config recipes/hbase-ec2.properties --private-key-file ~/.ssh/id_rsa_whirr
-```
-
 Installing HBase
 ================
 
