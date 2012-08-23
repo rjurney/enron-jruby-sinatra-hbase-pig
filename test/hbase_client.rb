@@ -2,4 +2,5 @@ require 'lib/hbase_client'
 
 hclient = HBaseClient.new
 hclient.connect('enron')
-hclient.get('row1')
+result = hclient.get('row1')
+puts result
