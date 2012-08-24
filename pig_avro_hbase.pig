@@ -4,26 +4,17 @@ register /me/pig/build/ivy/lib/Pig/json-simple-1.1.jar
 register /me/pig/contrib/piggybank/java/piggybank.jar
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 
-/* Register our JRuby UDFs */
-register 'udf.rb' using jruby as udfs;
+/* HBaseStorage shortcut */
+register /me/pig/build/ivy/lib/Pig/hbase-0.90.0.jar
+register /me/pig/build/ivy/lib/Pig/zookeeper-3.3.3.jar
+define HBaseStorage org.apache.pig.backend.hadoop.hbase.HBaseStorage();
 
 emails = load '/me/tmp/enron.avro' using AvroStorage();
-tested_emails = foreach emails generate from.address, udfs.valid_email(from.address) as is_valid:boolean;
-invalid_emails = filter tested_emails by is_valid == false;
-a = limit invalid_emails 10;
-dump a
+from_to = foreach emails generate from.address as from_address, FLATTEN(tos.(address)) as to_address;
 
-/* We have some invalid email addresses in the data:
+store from_to into 'hbase://enron' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('email:from_address email:to_address');
 
-("d@piassick".,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-(carol.st.@enron.com,false)
-
-*/
+/*copy = STORE raw INTO 'hbase://SampleTableCopy'
+       USING org.apache.pig.backend.hadoop.hbase.HBaseStorage(
+       'info:first_name info:last_name friends:* info:*')
+       AS (info:first_name info:last_name buddies:* info:*);*/
