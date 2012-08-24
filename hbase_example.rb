@@ -49,6 +49,7 @@ def get(key, table)
 end
 
 # Fetch the row we previously stored, row1, and convert it back to our Ruby type
+table = connect("enron")
 timestamp, value = get("row1", table) # => [1345691847565, "bob@enron.com"]
 puts "Timestamp: #{timestamp}, Value: #{value}"
 
