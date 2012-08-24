@@ -26,9 +26,7 @@ class HBaseClient
   def connect(table_name)
     conf = HBaseConfiguration.create
     admin = HBaseAdmin.new(conf)
-    admin.tableExists('enron')
-    tables = admin.listTables
-    @table = HTable.new(conf, 'enron')
+    @table = HTable.new(conf, table_name)
   end
   
   def get(key)
@@ -36,12 +34,12 @@ class HBaseClient
     result = @table.get(get)
     kv = result.list.first
     family = String.from_java_bytes(kv.get_family)
-    qualifier = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_qualifier) # "address"
-    column = "#{family}:#{qualifier}" # "email:address"
+    qualifier = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_qualifier)
+    column = "#{family}:#{qualifier}"
     value = to_string(column, kv, -1)
-    timestamp = kv.get_timestamp # 1345691847565
-    email_address = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_value) # bob@enron.com
-    return timestamp, email_address
+    timestamp = kv.get_timestamp
+    str_value = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_value)
+    return timestamp, str_value
   end
   
   # Make a String of the passed kv
