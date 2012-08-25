@@ -4,7 +4,7 @@ register /me/pig/build/ivy/lib/Pig/json-simple-1.1.jar
 register /me/pig/contrib/piggybank/java/piggybank.jar
 define AvroStorage org.apache.pig.piggybank.storage.avro.AvroStorage();
 
-/* HBaseStorage shortcut */
+/* HBaseStorage libraries */
 register /me/pig/build/ivy/lib/Pig/hbase-0.94.1.jar
 register /me/pig/build/ivy/lib/Pig/zookeeper-3.3.3.jar
 register /me/pig/build/ivy/lib/Pig/guava-11.0.jar
@@ -22,7 +22,6 @@ by_pair = group from_to by (from_address, to_address);
 sent_counts = foreach by_pair generate udfs.uuid() as id, 
                                        FLATTEN(group) as (from_address, to_address), 
                                        COUNT_STAR(from_to) as total_sent;
-store sent_counts into '/tmp/sent_counts';
-              
-/*store sent_counts into 'enron3' using 
-      org.apache.pig.backend.hadoop.hbase.HBaseStorage('address.pairs:from_address address.pairs:to_address address.pairs:total_sent', '-loadKey true');*/
+                                       
+/* Store to the HBase table 'enron' using a UUID as row key with the loadKey option. */
+store sent_counts into 'enron4' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('address.pairs:from_address address.pairs:to_address address.pairs:total_sent', 'loadKey true');
