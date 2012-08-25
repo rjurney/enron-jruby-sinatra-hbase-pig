@@ -20,20 +20,26 @@ class HBaseClient
   
   def initialize()
     @table = nil
+    @conf = nil
   end
   
   # Connect to HBase and our table
   def connect(table_name)
-    conf = HBaseConfiguration.create
-    admin = HBaseAdmin.new(conf)
-    @table = HTable.new(conf, table_name)
+    @conf = HBaseConfiguration.create
+    admin = HBaseAdmin.new(@conf)
+    @table = HTable.new(@conf, table_name)
   end
   
-  def get(key)
-    get = Get.new(key.to_java_bytes)
-    result = @table.get(get)
+  def get_key(key)
+    puts key
+    puts key.to_java_bytes
+    my_get = Get.new(key.to_java_bytes)
+    puts my_get
+    result = @table.get(my_get)
+    puts result
     kv = result.list.first
     family = String.from_java_bytes(kv.get_family)
+    puts family
     qualifier = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_qualifier)
     column = "#{family}:#{qualifier}"
     value = to_string(column, kv, -1)
