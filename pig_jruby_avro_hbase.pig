@@ -24,4 +24,4 @@ sent_counts = foreach by_pair generate udfs.uuid() as id,
                                        COUNT_STAR(from_to) as total_sent;
                                        
 /* Store to the HBase table 'enron' using a UUID as row key with the loadKey option. */
-store sent_counts into 'enron4' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('address.pairs:from_address address.pairs:to_address address.pairs:total_sent', 'loadKey true');
+store sent_counts into 'enron6' using org.apache.pig.backend.hadoop.hbase.HBaseStorage('address.pairs:from_address address.pairs:to_address address.pairs:total_sent', 'loadKey true');
