@@ -30,9 +30,9 @@ end
 def connect(table_name)
   conf = HBaseConfiguration.create
   admin = HBaseAdmin.new(conf)
-  admin.tableExists('enron')
+  admin.tableExists('enron2')
   tables = admin.listTables
-  table = HTable.new(conf, 'enron')
+  table = HTable.new(conf, 'enron2')
 end
 
 def get(key, table)
@@ -49,7 +49,7 @@ def get(key, table)
 end
 
 # Fetch the row we previously stored, row1, and convert it back to our Ruby type
-table = connect("enron")
+table = connect("enron2")
 timestamp, value = get("row1", table) # => [1345691847565, "bob@enron.com"]
 puts "Timestamp: #{timestamp}, Value: #{value}"
 
