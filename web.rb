@@ -4,10 +4,12 @@ require 'lib/hbase_client'
 require 'lib/data_utils'
 require 'sinatra'
 
+hclient = HBaseClient.new
+hclient.connect('enron6')
+
 get '/pairs/:message_id' do |message_id|
-  @hclient = HBaseClient.new
-  @hclient.connect('enron6')
-  return JSON(@hclient.get_key(message_id))
+  vals = hclient.get_key(message_id)
+  return JSON(hclient.get_key(message_id))
 end
 
 get '/create_uuid' do

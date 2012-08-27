@@ -33,16 +33,17 @@ class HBaseClient
   def get_key(key)
     my_get = Get.new(key.to_java_bytes)
     result = @table.get(my_get)
-    puts result
-    kv = result.list.first
-    family = String.from_java_bytes(kv.get_family)
-    puts family
-    qualifier = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_qualifier)
-    column = "#{family}:#{qualifier}"
-    value = to_string(column, kv, -1)
-    timestamp = kv.get_timestamp
-    str_value = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_value)
-    return timestamp, str_value
+    result_ary = []
+    for kv in result.list
+      family = String.from_java_bytes(kv.get_family)
+      qualifier = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_qualifier)
+      column = "#{family}:#{qualifier}"
+      value = to_string(column, kv, -1)
+      timestamp = kv.get_timestamp
+      str_value = org.apache.hadoop.hbase.util.Bytes::toStringBinary(kv.get_value)
+      result_ary << str_value.to_s
+    end
+    result_ary
   end
   
   # Make a String of the passed kv
