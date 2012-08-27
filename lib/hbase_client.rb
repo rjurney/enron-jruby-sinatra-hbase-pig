@@ -31,10 +31,7 @@ class HBaseClient
   end
   
   def get_key(key)
-    puts key
-    puts key.to_java_bytes
     my_get = Get.new(key.to_java_bytes)
-    puts my_get
     result = @table.get(my_get)
     puts result
     kv = result.list.first
