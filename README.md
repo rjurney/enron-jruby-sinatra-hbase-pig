@@ -1,7 +1,9 @@
 enron-jruby-sinatra-hbase-pig
 =============================
 
-Hortonworks demo of Enron emails using Hadoop, Pig, HBase, JRuby, Sinatra
+Hortonworks demo of Enron emails using Hadoop, Pig, HBase, JRuby, Sinatra. 
+
+See blog post at: http://hortonworks.com/blog
 
 Installing HBase
 ================
@@ -43,7 +45,14 @@ tar -xvzf pig-0.10.0.tar.gz
 
 Installing JRuby
 ================
+You can download JRuby at http://jruby.org/download or better yet, install it via rvm, which you can install via the instructions here: https://rvm.io/rvm/install/.
 
+Installing Sinatra
+==================
+```bash
+jgem install sinatra
+jgem install json
+```
 
 JRuby and HBase
 ===============
